@@ -1,0 +1,77 @@
+{
+    "name": "mysql80_222",
+    "description": "",
+    "subscription": "aws-test",
+    "edition": "COMMUNITY",
+    "engineType": "MYSQL",
+    "topology": "single_instance",
+    "softwareImage": "MySQL 8.0",
+    "softwareImageVersion": "MySQL 8.0.40",
+    "autoMinorVersionUpdate": true,
+    "enableDeletionProtection": false,
+    "enableStopProtection": false,
+    "infrastructure": {
+      "cloud": "aws",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "vpc": "tessell-vpc-4th1d",
+      "privateSubnet": "tessell-vpc-4th1d-private-us-east-1a",
+      "computeType": "tesl_2_a",
+      "enableEncryption": true,
+      "encryptionKey": "default-encryption-key",
+      "additionalStorage": 0,
+      "computes": [
+        {
+          "role": "primary",
+          "storageConfig": {
+            "provider": "AWS_EBS"
+          },
+          "privateSubnet": "tessell-vpc-4th1d-private-us-east-1a",
+          "availabilityZone": "us-east-1a"
+        }
+      ]
+    },
+    "serviceConnectivity": {
+      "servicePort": "3306",
+      "enablePublicAccess": false,
+      "allowedIpAddresses": [],
+      "enableSSL": false
+    },
+    "enablePerfInsights": false,
+    "creds": {
+      "masterUser": "master",
+      "masterPassword": "Tessell123ZX@$"
+    },
+    "maintenanceWindow": {
+      "day": "Sunday",
+      "time": "02:00",
+      "duration": 30
+    },
+    "engineConfiguration": {
+      "mysqlConfig": {
+        "parameterProfileId": "1482dbc2-0897-402a-bb0a-f878b241878a"
+      }
+    },
+    "databases": [
+      {
+        "databaseName": "db1",
+        "databaseConfiguration": {
+          "mysqlConfig": {
+            "parameterProfileId": "1482dbc2-0897-402a-bb0a-f878b241878a"
+          }
+        }
+      }
+    ],
+    "rpoPolicyConfig": {
+      "enableAutoSnapshot": true,
+      "standardPolicy": {
+        "retentionDays": 2,
+        "includeTransactionLogs": true,
+        "snapshotStartTime": {
+          "hour": 8,
+          "minute": 0
+        }
+      }
+    },
+    "tags": []
+  }
