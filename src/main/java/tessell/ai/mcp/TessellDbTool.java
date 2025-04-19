@@ -16,6 +16,8 @@ import tessell.mcp.service.TessellDbAdminService;
 import tessell.mcp.service.TessellSnapshotAdminService;
 import tessell.utils.DbUtils;
 
+import java.util.UUID;
+
 @ApplicationScoped
 @Slf4j
 public class TessellDbTool {
@@ -33,10 +35,39 @@ public class TessellDbTool {
             "requests a Tessell MySQL database or when Tessell is the context of the conversation.")
     public String provisionNewMysql(
             @ToolArg(description = "The name of the database to provision or create in tessell, " +
-                    "if it does not exist give a random name") String databaseName)  {
-        DatabaseServiceRequest request = objectMapper.readValue(dbUtils.readConfigFile(), DatabaseServiceRequest.class);
-        request.setName(databaseName);
-        return apiService.createService(request).toString();
+                    "if it does not exist give a random name") String databaseName,
+            @ToolArg(description = "Set this to true to confirm and execute provisioning. If false or omitted, the tool " +
+                    "will only return the configuration for review.")
+            boolean confirmProvisioning)  {
+//        DatabaseServiceRequest request = objectMapper.readValue(dbUtils.readConfigFile(), DatabaseServiceRequest.class);
+//        request.setName(databaseName);
+//        return apiService.createService(request).toString();
+        try {
+            String finalName = (databaseName == null || databaseName.isBlank())
+                    ? "tessell_mysql_" + UUID.randomUUID().toString().substring(0, 8)
+                    : databaseName;
+
+            // Load config and set name
+            DatabaseServiceRequest request = objectMapper.readValue(dbUtils.returnMqlConfig(), DatabaseServiceRequest.class);
+            request.setName(finalName);
+            String summary = "🛠 Tessell MySQL Provisioning Request:\n" +
+                    "- Database Name: " + finalName;
+
+            if (!confirmProvisioning) {
+                return Json.createObjectBuilder().add("summary",summary + "\n\n✅ Configuration is ready.\n" +
+                        "❗ No database has been created.\n" +
+                        "👉 To proceed, please re-run with `confirmProvisioning=true`.").build().toString();
+            }
+
+            // Confirmed — proceed with provisioning
+            Object response = apiService.createService(request);
+            return Json.createObjectBuilder().add("summary",    summary + "" +
+                    "\n\n✅ Tessell MySQL database has been successfully provisioned:\n" + response).build().toString();
+
+        } catch (Exception e) {
+            return Json.createObjectBuilder().add("summary",
+                    "🚫 (Tessell)❌ Failed to process the provisioning request: " + e.getMessage()).build().toString();
+        }
     }
     @Tool(name="get-all-databases", description = "You can get all databases in tessell. Only call this function when " +
             "the user explicitly asks about Tessell databases or when Tessell is clearly the context of the conversation.")

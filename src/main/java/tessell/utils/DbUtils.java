@@ -5,15 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import tessell.mcp.model.DatabaseServiceRequest;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 @ApplicationScoped
 public class DbUtils {
     ObjectMapper mapper = new ObjectMapper();
     public DatabaseServiceRequest createServiceRequest(String databaseName) {
-        String config = readConfigFile();
+        String config = returnMqlConfig();
         try {
             return mapper.readValue(config, DatabaseServiceRequest.class);
         } catch (JsonProcessingException e) {
@@ -21,7 +17,7 @@ public class DbUtils {
         }
     }
 
-    public String readConfigFile() {
+    public String returnMqlConfig() {
 //        try (InputStream is = getClass().getClassLoader().getResourceAsStream("provison.json")) {
 //            if (is == null) {
 //                throw new RuntimeException("File not found in resources");
