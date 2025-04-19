@@ -36,8 +36,7 @@ public class TessellDbTool {
     public String provisionNewMysql(
             @ToolArg(description = "The name of the database to provision or create in tessell, " +
                     "if it does not exist give a random name") String databaseName,
-            @ToolArg(description = "Set this to true to confirm and execute provisioning. If false or omitted, the tool " +
-                    "will only return the configuration for review.")
+            @ToolArg(description = "Set to true only if you're confirming the creation of the MYSQL instance asking for confirmation.")
             boolean confirmProvisioning)  {
 //        DatabaseServiceRequest request = objectMapper.readValue(dbUtils.readConfigFile(), DatabaseServiceRequest.class);
 //        request.setName(databaseName);
@@ -61,10 +60,11 @@ public class TessellDbTool {
 
             // Confirmed — proceed with provisioning
             Object response = apiService.createService(request);
-            return Json.createObjectBuilder().add("summary",    summary + "" +
-                    "\n\n✅ Tessell MySQL database has been successfully provisioned:\n" + response).build().toString();
+            return Json.createObjectBuilder().add("summary",    summary +
+                    "✅ Tessell MySQL database has been successfully provisioned:\n" + response).build().toString();
 
         } catch (Exception e) {
+            e.printStackTrace();
             return Json.createObjectBuilder().add("summary",
                     "🚫 (Tessell)❌ Failed to process the provisioning request: " + e.getMessage()).build().toString();
         }
