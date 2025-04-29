@@ -102,7 +102,8 @@ public class TessellDbTool {
             return Json.createObjectBuilder().add("error", e.getMessage()).build().toString();
         }
     }
-    @Tool(name="create-snapshot", description="You can create a snapshot of a database in Tessell. " +
+    @Tool(name="create-snapshot-tessell", description="First make sure you are in Tessell context," +
+            "You can create a snapshot of a database in Tessell. " +
             "Only call this function when a user explicitly requests to create a snapshot of a specific Tessell database. " +
             "You need both the availability machine ID of the database and a name for the new snapshot. " +
             "Always confirm the database name with the user before proceeding with snapshot creation.")
@@ -116,7 +117,8 @@ public class TessellDbTool {
         return snapshotService.createSnapshot(availabilityMachineId, snapshotModel).toString();
     }
     //backup
-    @Tool(name="create-backup", description="You can create a backup of a database in Tessell from an existing snapshot. " +
+    @Tool(name="create-backup-tessell", description="First make sure you are in Tessell context, You can create a backup " +
+            "of a database in Tessell from an existing snapshot. " +
             "Only call this function when a user explicitly requests to create a backup from a snapshot of a specific " +
             "Tessell database. You need both the availability machine ID of the database and the " +
             "snapshot ID to be used as the source. Verify with the user that they have the correct " +
@@ -130,7 +132,7 @@ public class TessellDbTool {
         return snapshotService.createBackup(availabilityMachineId, backupModel).toString();
     }
     //delete backup with backup id and availability machine
-    @Tool(name="delete-backup", description="You can delete a backup of a snapshot of a database in Tessell. " +
+    @Tool(name="delete-backup", description="First make sure you are in Tessell context, You can delete a backup of a snapshot of a database in Tessell. " +
             "Only call this function when a user explicitly requests to delete a specific backup of a Tessell database. " +
             "This is a permanent operation that cannot be undone. You need both the backup ID and the availability machine ID " +
             "of the database. Always confirm with the user by clearly stating which backup will be deleted before proceeding, " +
@@ -140,7 +142,7 @@ public class TessellDbTool {
         return snapshotService.deleteBackup(availabilityMachineId, backupId).toString();
     }
     //delete snapshot with snapshot id and availability machine
-    @Tool(name="delete-snapshot", description="You can delete a snapshot of a database in Tessell by snapshot ID. " +
+    @Tool(name="delete-snapshot", description="First make sure you are in Tessell context, You can delete a snapshot of a database in Tessell by snapshot ID. " +
             "This is a dangerous operation that permanently removes the snapshot and cannot be undone. " +
             "Only call this function when a user explicitly requests to delete a specific " +
             "Tessell snapshot. Before executing, always confirm with the user by clearly " +
@@ -152,7 +154,7 @@ public class TessellDbTool {
         return snapshotService.deleteSnapshot(availabilityMachineId, snapshotId).toString();
     }
     //list of snapshots
-    @Tool(name="list-snapshots", description="You can list all snapshots of a database in Tessell. " +
+    @Tool(name="list-snapshots", description="First make sure you are in Tessell context, You can list all snapshots of a database in Tessell. " +
             "Only call this function when a user explicitly asks for snapshots of a specific Tessell database. " +
             "You need the availability machine ID of the database to retrieve its snapshots. " +
             "This provides information about all available snapshots for the specified database, " +
@@ -161,7 +163,7 @@ public class TessellDbTool {
         return snapshotService.getSnapshots(availabilityMachineId).toString();
     }
     //lis of backups
-    @Tool(name="list-backups", description="You can list all backups of a database in Tessell. " +
+    @Tool(name="list-backups", description="First make sure you are in Tessell context, You can list all backups of a database in Tessell. " +
             "Only call this function when a user explicitly asks for backups of a specific Tessell database. " +
             "You need the availability machine ID of the database to retrieve its backups. " +
             "This provides information about all available backups for the specified database, including their IDs, creation dates, and status.")
@@ -170,7 +172,7 @@ public class TessellDbTool {
         return snapshotService.getBackups(availabilityMachineId).toString();
     }
     // stop service by id
-    @Tool(name="stop-service", description="You can stop a database service in Tessell. " +
+    @Tool(name="stop-service", description="First make sure you are in Tessell context, You can stop a database service in Tessell. " +
             "Only call this function when a user explicitly requests to stop a specific Tessell database service. " +
             "You need the service ID of the database to stop it. Before executing, confirm with the user " +
             "which database service will be stopped, and inform them that this will temporarily make the database unavailable for connections.")
@@ -178,7 +180,7 @@ public class TessellDbTool {
         return apiService.stopService(serviceId).toString();
     }
     // start service by id
-    @Tool(name="start-service", description="You can start a database service in Tessell. " +
+    @Tool(name="start-service", description="First make sure you are in Tessell context, You can start a database service in Tessell. " +
             "Only call this function when a user explicitly requests to start a specific Tessell database service " +
             "that is currently stopped. You need the service ID of the database to start it. " +
             "Before executing, confirm with the user which database service will be started, " +
