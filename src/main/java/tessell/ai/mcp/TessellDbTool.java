@@ -28,7 +28,7 @@ public class TessellDbTool {
 
 
     @SneakyThrows
-    @Tool(name="provision-new-mysql", description = "You can provision or create a new MySQL database only in Tessell " +
+    @Tool(name="provision-new-mysql-tessell", description = "You can provision or create a new MySQL database only in Tessell " +
             "and expect the database name to be passed as an argument. This function is specifically for Tessell database " +
             "provisioning - if the user is requesting an AWS RDS MySQL instance or a GCP Cloud SQL instance, " +
             "you should use the appropriate tool for those services instead. Only use this function when the user explicitly " +
@@ -69,12 +69,12 @@ public class TessellDbTool {
                     "🚫 (Tessell)❌ Failed to process the provisioning request: " + e.getMessage()).build().toString();
         }
     }
-    @Tool(name="get-all-databases", description = "You can get all databases in tessell. Only call this function when " +
+    @Tool(name="get-all-tessell-databases", description = "You can get all databases in tessell. Only call this function when " +
             "the user explicitly asks about Tessell databases or when Tessell is clearly the context of the conversation.")
     public String getAllDatabases() {
         return apiService.fetchAllServices().toString();
     }
-    @Tool(name="delete-database", description="You can delete a database in tessell by id however this is very dangerous " +
+    @Tool(name="delete-tessell-database", description="You can delete a database in tessell by id however this is very dangerous " +
             "and requires extreme caution. Only call this function when the user explicitly requests to delete a Tessell database." +
             " Before executing, always confirm with the user by clearly stating which database will be deleted (name and ID)," +
             " warn about the permanent consequences, and ask for explicit confirmation. Double check that the user understands " +
@@ -89,7 +89,7 @@ public class TessellDbTool {
         return apiService.deleteService(deleteDbServiceModel,databaseId).toString();
 
     }
-    @Tool(name="get-database-id", description="You can get detailed information about a specific database in Tessell using its ID. " +
+    @Tool(name="get-tessell-database-id", description="You can get detailed information about a specific database in Tessell using its ID. " +
             "Only call this function when a user explicitly asks for information about a particular Tessell database and " +
             "has provided a database ID, or when you need to retrieve detailed information about a specific " +
             "Tessell database in the conversation context.")
@@ -132,7 +132,7 @@ public class TessellDbTool {
         return snapshotService.createBackup(availabilityMachineId, backupModel).toString();
     }
     //delete backup with backup id and availability machine
-    @Tool(name="delete-backup", description="First make sure you are in Tessell context, You can delete a backup of a snapshot of a database in Tessell. " +
+    @Tool(name="delete-tessell-backup", description="First make sure you are in Tessell context, You can delete a backup of a snapshot of a database in Tessell. " +
             "Only call this function when a user explicitly requests to delete a specific backup of a Tessell database. " +
             "This is a permanent operation that cannot be undone. You need both the backup ID and the availability machine ID " +
             "of the database. Always confirm with the user by clearly stating which backup will be deleted before proceeding, " +
@@ -142,7 +142,7 @@ public class TessellDbTool {
         return snapshotService.deleteBackup(availabilityMachineId, backupId).toString();
     }
     //delete snapshot with snapshot id and availability machine
-    @Tool(name="delete-snapshot", description="First make sure you are in Tessell context, You can delete a snapshot of a database in Tessell by snapshot ID. " +
+    @Tool(name="delete-tessell-snapshot", description="First make sure you are in Tessell context, You can delete a snapshot of a database in Tessell by snapshot ID. " +
             "This is a dangerous operation that permanently removes the snapshot and cannot be undone. " +
             "Only call this function when a user explicitly requests to delete a specific " +
             "Tessell snapshot. Before executing, always confirm with the user by clearly " +
@@ -154,7 +154,7 @@ public class TessellDbTool {
         return snapshotService.deleteSnapshot(availabilityMachineId, snapshotId).toString();
     }
     //list of snapshots
-    @Tool(name="list-snapshots", description="First make sure you are in Tessell context, You can list all snapshots of a database in Tessell. " +
+    @Tool(name="list-tessell-snapshots", description="First make sure you are in Tessell context, You can list all snapshots of a database in Tessell. " +
             "Only call this function when a user explicitly asks for snapshots of a specific Tessell database. " +
             "You need the availability machine ID of the database to retrieve its snapshots. " +
             "This provides information about all available snapshots for the specified database, " +
@@ -163,7 +163,7 @@ public class TessellDbTool {
         return snapshotService.getSnapshots(availabilityMachineId).toString();
     }
     //lis of backups
-    @Tool(name="list-backups", description="First make sure you are in Tessell context, You can list all backups of a database in Tessell. " +
+    @Tool(name="list-tessell-backups", description="First make sure you are in Tessell context, You can list all backups of a database in Tessell. " +
             "Only call this function when a user explicitly asks for backups of a specific Tessell database. " +
             "You need the availability machine ID of the database to retrieve its backups. " +
             "This provides information about all available backups for the specified database, including their IDs, creation dates, and status.")
@@ -172,7 +172,7 @@ public class TessellDbTool {
         return snapshotService.getBackups(availabilityMachineId).toString();
     }
     // stop service by id
-    @Tool(name="stop-service", description="First make sure you are in Tessell context, You can stop a database service in Tessell. " +
+    @Tool(name="stop-tessell-db-service", description="First make sure you are in Tessell context, You can stop a database service in Tessell. " +
             "Only call this function when a user explicitly requests to stop a specific Tessell database service. " +
             "You need the service ID of the database to stop it. Before executing, confirm with the user " +
             "which database service will be stopped, and inform them that this will temporarily make the database unavailable for connections.")
@@ -180,7 +180,7 @@ public class TessellDbTool {
         return apiService.stopService(serviceId).toString();
     }
     // start service by id
-    @Tool(name="start-service", description="First make sure you are in Tessell context, You can start a database service in Tessell. " +
+    @Tool(name="start-tessell-db-service", description="First make sure you are in Tessell context, You can start a database service in Tessell. " +
             "Only call this function when a user explicitly requests to start a specific Tessell database service " +
             "that is currently stopped. You need the service ID of the database to start it. " +
             "Before executing, confirm with the user which database service will be started, " +
